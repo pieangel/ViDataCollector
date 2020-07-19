@@ -67,6 +67,7 @@ public:
 	void PushChartDataItemToBack(SmChartDataItem data);
 	void PushChartDataItemToFront(SmChartDataItem data);
 	void UpdateChartData(SmChartDataItem data);
+	void AddChartData(SmChartDataItem&& data);
 	// 분봉데이터를 업데이트 한다.
 	void UpdateChartData(std::string time, int close, int vol);
 	// 틱데이터를 업데이트 한다.

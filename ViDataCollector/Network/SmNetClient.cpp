@@ -9,6 +9,13 @@ void SmNetClient::ThreadMain()
 	Start();
 }
 
+void SmNetClient::Stop()
+{
+	if (_context) {
+		_context->stop();
+	}
+}
+
 void SmNetClient::Start()
 {
 	SmConfigManager* configMgr = SmConfigManager::GetInstance();
@@ -30,13 +37,17 @@ void SmNetClient::Start()
 	auto const pwd = "orion1";
 
 	// The io_context is required for all I/O
-	net::io_context ioc;
+	//net::io_context ioc;
+
+	_context = new net::io_context();
 
 	// Launch the asynchronous operation
-	std::make_shared<SmWebsocketSession>(ioc)->run(addr.c_str(), port.c_str(), id, pwd);
+	//std::make_shared<SmWebsocketSession>(ioc)->run(addr.c_str(), port.c_str(), id, pwd);
+	std::make_shared<SmWebsocketSession>(*_context)->run(addr.c_str(), port.c_str(), id, pwd);
 
 	// Run the I/O service. The call will return when
 	// the socket is closed.
-	ioc.run();
+	//ioc.run();
+	_context->run();
 }
 

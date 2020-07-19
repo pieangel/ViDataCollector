@@ -134,6 +134,7 @@ BOOL CViDataCollectorDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 
+
 	VtLogInDlg loginDlg(this);
 	if (loginDlg.DoModal() == IDCANCEL)
 	{

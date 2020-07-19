@@ -4,9 +4,9 @@
 #include <cmath>
 
 #include <memory>
-#include "../pch.h"
+//#include "../pch.h"
 
-#define WM_ORDERWND_CLOSED (WM_USER + 100)
+//#define WM_ORDERWND_CLOSED (WM_USER + 100)
 
 #define ROUNDING(x, dig)	( floor((x) * pow(float(10), dig) + 0.5f) / pow(float(10), dig) )
 /*
@@ -20,8 +20,8 @@ const int ChartDataSize = 1500;
 const int TempDataSize = ChartDataSize;
 
 
-const int BitTrexTimerID = WM_USER + 1000;
-const int BithumbTimerID = WM_USER + 1001;
+//const int BitTrexTimerID = WM_USER + 1000;
+//const int BithumbTimerID = WM_USER + 1001;
 
 const int ConfigHeight = 94;
 const int ConfigWidth = 480;
@@ -340,18 +340,18 @@ class Layer;
 class Axis;
 class XYChart;
 
-struct VtLayerInfo
-{
-	bool embed = false;
-	bool shareAxis = false;
-	bool selected = false;
-	Layer* layer;
-	Axis* axis;
-	XYChart* chart;
-	VtChartData* data;
-	COLORREF color;
-	int colorIndex;
-};
+// struct VtLayerInfo
+// {
+// 	bool embed = false;
+// 	bool shareAxis = false;
+// 	bool selected = false;
+// 	Layer* layer;
+// 	Axis* axis;
+// 	XYChart* chart;
+// 	VtChartData* data;
+// 	COLORREF color;
+// 	int colorIndex;
+// };
 
 enum class SmOrderGridCol {
 	STOP,

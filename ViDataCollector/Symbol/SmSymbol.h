@@ -3,7 +3,9 @@
 #include <list>
 #include "../Quote/SmQuoteDefine.h"
 #include "../Hoga/SmHogaDefine.h"
-
+#include "../Chart/SmChartDefine.h"
+#include <mutex>
+#include <map>
 class SmSymbol
 {
 public:
@@ -57,7 +59,12 @@ public:
 	void EndMin(int val) { _EndMin = val; }
 	int EndSecond() const { return _EndSecond; }
 	void EndSecond(int val) { _EndSecond = val; }
+
+	void MakeCurrChartDataByTimer(std::string cur_hour_min);
+	void MakePrevChartDataByTimer(std::string cur_hour_min);
+
 private:
+	std::mutex _mutex;
 	// 누적 거래량
 	int _AccAmount;
 
@@ -104,5 +111,18 @@ private:
 	int _EndHour = 15;
 	int _EndMin = 45;
 	int _EndSecond = 0;
+
+	// 분데이터 맵 키 : 시간과분의 4자리 키, 값은 시,고,저,종, 거래량이 담겨있는 차트 데이터
+	std::map<std::string, SmChartDataItem> _MinDataMap;
+
+	// 120틱 카운트
+	int tick_count_120 = -1;
+	int tick_count_300 = -1;
+	std::string last_tick_time_120 = "";
+	std::string last_tick_time_300 = "";
+
+	void MakePrevChartData(int total_min_diff, std::string symbol_code, std::string prev_hour_min, std::string chart_hour_min, int cycle);
+	// 사이클 데이터를 서버로 전송한다.
+	void SendCycleChartData(SmChartDataItem item);
 };
 

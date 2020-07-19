@@ -297,8 +297,8 @@ void SmSymbolManager::OnTimer()
 		std::string prev_index = SmUtil::Format("%02d%02d", prev_hour, prev_min);
 		std::string cur_index = SmUtil::Format("%02d%02d", cur_hour, cur_min);
 		// 과거봉의 차트 데이터를 만든다.
-		//symbol->MakePrevChartDataByTimer(cur_index);
+		symbol->MakePrevChartDataByTimer(cur_index);
 		// 현재 봉의 차트 데이터를 만든다.
-		//symbol->MakeCurrChartDataByTimer(cur_index);
+		symbol->MakeCurrChartDataByTimer(cur_index);
 	}
 }

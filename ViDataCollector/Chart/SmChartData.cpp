@@ -210,6 +210,20 @@ void SmChartData::UpdateChartData(std::string time, int close, int vol)
 	}
 }
 
+void SmChartData::AddChartData(SmChartDataItem&& data)
+{
+	std::string date_time;
+	date_time.append(data.date);
+	date_time.append(data.time);
+	_DataMap[date_time] = data;
+
+	// 일정한 갯수가 넘어가면 이전 데이터는 제거해 준다.
+	if (_DataMap.size() > 3) {
+		auto it = _DataMap.begin();
+		_DataMap.erase(it);
+	}
+}
+
 void SmChartData::UpdateTickData(size_t index, std::string time, int close, int vol)
 {
 	// 수집 범위를 벗어나면 수집하지 않는다.
