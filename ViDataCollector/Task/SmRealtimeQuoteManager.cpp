@@ -161,55 +161,15 @@ void SmRealtimeQuoteManager::ExecuteTask(SmQuoteData&& item)
 	SmSymbol* sym = symMgr->FindSymbol(item.symbol_code);
 	if (!sym)
 		return;
-
-// 	if (item.up_down_rate.length() > 0)
-// 		sym->UpdownRate = std::stoi(item.up_down_rate);
-// 	else
-// 		sym->UpdownRate = 0;
 	sym->Quote.Close = std::stoi(item.close);
 	sym->Quote.Open = std::stoi(item.open);
 	sym->Quote.High = std::stoi(item.high);
 	sym->Quote.Low = std::stoi(item.low);
-
-
-
-	// 차트 종가를 업데이트 한다.
-	//sym->UpdateChartValue();
-
-	SmChartDataManager* chartDataMgr = SmChartDataManager::GetInstance();
-	// 차트데이터를 업데이트 한다.
-	//chartDataMgr->UpdateChartData(item.symbol_code, item.time, sym->Quote.intClose);
-
-	
-	SmQuoteData quoteItem;
-
-// 	if (item.up_down.compare(_T("+")) == 0)
-// 		quoteItem.MatchKind = 1;
-// 	else
-// 		quoteItem.MatchKind = 2;
-
-	//quoteItem.ClosePrice = std::stoi(item.close);
-
-	std::string quote_time = item.time;
-	quote_time.insert(2, ":");
-	quote_time.insert(5, ":");
-
-// 	quoteItem.Time = quote_time;
-// 
-// 
-// 	quoteItem.ContQty = std::stoi(item.volume);
-// 
-// 
-// 	quoteItem.Decimal = sym->Decimal;
-// 
-// 	sym->Quote.QuoteItemQ.push_front(quoteItem);
-// 	if (sym->Quote.QuoteItemQ.size() > 20) {
-// 		sym->Quote.QuoteItemQ.pop_back();
-// 	}
-
-	// 손절, 익절, 스탑 주문을 체크한다.
-	SmCallbackManager::GetInstance()->OnQuoteEvent(sym);
-
+	sym->Quote.OriginTime = item.time;
+	sym->Quote.GapFromPreDay = std::stoi(item.to_preday);
+	sym->Quote.RatioToPreday = std::stoi(item.up_down_rate);
+	sym->Quote.SignToPreDay = std::stoi(item.up_down);
+	sym->Quote.accVolume = std::stoi(item.acc_vol);
 	
 
 	// 관련된 윈도우에 메시지를 보낸다.
@@ -243,55 +203,15 @@ bool SmRealtimeQuoteManager::ExecuteTask(std::array<SmQuoteData, QuoteArraySize>
 
 		// 집합에 심볼을 추가한다.
 		symbol_set.insert(sym);
-
-// 		if (item.up_down_rate.length() > 0)
-// 			sym->UpdownRate = std::stoi(item.up_down_rate);
-// 		else
-// 			sym->UpdownRate = 0;
-// 		sym->Quote.intClose = std::stoi(item.close);
-// 		sym->Quote.intOpen = std::stoi(item.open);
-// 		sym->Quote.intHigh = std::stoi(item.high);
-// 		sym->Quote.intLow = std::stoi(item.low);
-// 
-// 		sym->Quote.close = sym->Quote.intClose / std::pow(10, sym->Decimal);
-// 		sym->Quote.open = sym->Quote.intOpen / std::pow(10, sym->Decimal);
-// 		sym->Quote.high = sym->Quote.intHigh / std::pow(10, sym->Decimal);
-// 		sym->Quote.low = sym->Quote.intLow / std::pow(10, sym->Decimal);
-// 
-// 		// 차트 종가를 업데이트 한다.
-// 		sym->UpdateChartValue();
-
-		SmChartDataManager* chartDataMgr = SmChartDataManager::GetInstance();
-		//chartDataMgr->UpdateChartData(item.symbol_code, item.time, sym->Quote.intClose);
-
-		//OnReceiveSise(_ttoi(strTime), sym);
-
-		SmQuoteData quoteItem;
-
-// 		if (item.up_down.compare(_T("+")) == 0)
-// 			quoteItem.MatchKind = 1;
-// 		else
-// 			quoteItem.MatchKind = 2;
-// 
-// 		quoteItem.ClosePrice = std::stoi(item.close);
-// 
-// 		std::string quote_time = item.time;
-// 		quote_time.insert(2, ":");
-// 		quote_time.insert(5, ":");
-// 
-// 		quoteItem.Time = quote_time;
-// 
-// 
-// 		quoteItem.ContQty = std::stoi(item.volume);
-// 
-// 
-// 		quoteItem.Decimal = sym->Decimal;
-// 
-// 		sym->Quote.QuoteItemQ.push_front(quoteItem);
-// 		if (sym->Quote.QuoteItemQ.size() > 20) {
-// 			sym->Quote.QuoteItemQ.pop_back();
-// 		}
-
+		sym->Quote.Close = std::stoi(item.close);
+		sym->Quote.Open = std::stoi(item.open);
+		sym->Quote.High = std::stoi(item.high);
+		sym->Quote.Low = std::stoi(item.low);
+		sym->Quote.OriginTime = item.time;
+ 		sym->Quote.GapFromPreDay = std::stoi(item.to_preday);
+ 		sym->Quote.RatioToPreday = (item.up_down_rate);
+ 		sym->Quote.SignToPreDay = (item.up_down);
+ 		sym->Quote.accVolume = std::stoi(item.acc_vol);
 
 		CString msg;
 		msg.Format(_T(" OnFutureHoga symbol_code = %s, time = %s\n"), item.symbol_code.c_str(), item.time.c_str());

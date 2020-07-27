@@ -3,6 +3,7 @@
 #include "../Symbol/SmSymbolManager.h"
 #include "../Symbol/SmSymbol.h"
 #include "SmCallbackManager.h"
+#include "../Log/loguru.hpp"
 
 SmRealtimeHogaManager::SmRealtimeHogaManager()
 {
@@ -265,100 +266,109 @@ void SmRealtimeHogaManager::ProcessProTask()
 
 void SmRealtimeHogaManager::ExecuteTask(SmHogaItem&& item)
 {
-	SmSymbolManager* symMgr = SmSymbolManager::GetInstance();
-	SmSymbol* sym = symMgr->FindSymbol(item.symbol_code);
-	if (!sym)
-		return;
+	try {
+		SmSymbolManager* symMgr = SmSymbolManager::GetInstance();
+		SmSymbol* sym = symMgr->FindSymbol(item.symbol_code);
+		if (!sym)
+			return;
 
-	if (item.sell_price1.length() > 0)
-		sym->Hoga.Ary[0].SellPrice = std::stoi(item.sell_price1);
-	else
-		sym->Hoga.Ary[0].SellPrice = 0;
+		if (item.sell_price1.length() > 0)
+			sym->Hoga.Ary[0].SellPrice = std::stoi(item.sell_price1);
+		else
+			sym->Hoga.Ary[0].SellPrice = 0;
 
-	if (item.buy_price1.length() > 0)
-		sym->Hoga.Ary[0].BuyPrice = std::stoi(item.buy_price1);
-	else
-		sym->Hoga.Ary[0].BuyPrice = 0;
-	sym->Hoga.Ary[0].SellQty = std::stoi(item.sell_qty1);
-	sym->Hoga.Ary[0].BuyQty = std::stoi(item.buy_qty1);
-	sym->Hoga.Ary[0].SellCnt = std::stoi(item.sell_count1);
-	sym->Hoga.Ary[0].BuyCnt = std::stoi(item.buy_count1);
-
-
-	if (item.sell_price2.length() > 0)
-		sym->Hoga.Ary[1].SellPrice = std::stoi(item.sell_price2);
-	else
-		sym->Hoga.Ary[1].SellPrice = 0;
-
-	if (item.buy_price2.length() > 0)
-		sym->Hoga.Ary[1].BuyPrice = std::stoi(item.buy_price2);
-	else
-		sym->Hoga.Ary[0].BuyPrice = 0;
-	sym->Hoga.Ary[1].SellQty = std::stoi(item.sell_qty2);
-	sym->Hoga.Ary[1].BuyQty = std::stoi(item.buy_qty2);
-	sym->Hoga.Ary[1].SellCnt = std::stoi(item.sell_count2);
-	sym->Hoga.Ary[1].BuyCnt = std::stoi(item.buy_count2);
+		if (item.buy_price1.length() > 0)
+			sym->Hoga.Ary[0].BuyPrice = std::stoi(item.buy_price1);
+		else
+			sym->Hoga.Ary[0].BuyPrice = 0;
+		sym->Hoga.Ary[0].SellQty = std::stoi(item.sell_qty1);
+		sym->Hoga.Ary[0].BuyQty = std::stoi(item.buy_qty1);
+		sym->Hoga.Ary[0].SellCnt = std::stoi(item.sell_count1);
+		sym->Hoga.Ary[0].BuyCnt = std::stoi(item.buy_count1);
 
 
-	if (item.sell_price3.length() > 0)
-		sym->Hoga.Ary[2].SellPrice = std::stoi(item.sell_price3);
-	else
-		sym->Hoga.Ary[2].SellPrice = 0;
+		if (item.sell_price2.length() > 0)
+			sym->Hoga.Ary[1].SellPrice = std::stoi(item.sell_price2);
+		else
+			sym->Hoga.Ary[1].SellPrice = 0;
 
-	if (item.buy_price3.length() > 0)
-		sym->Hoga.Ary[2].BuyPrice = std::stoi(item.buy_price3);
-	else
-		sym->Hoga.Ary[2].BuyPrice = 0;
-	sym->Hoga.Ary[2].SellQty = std::stoi(item.sell_qty3);
-	sym->Hoga.Ary[2].BuyQty = std::stoi(item.buy_qty3);
-	sym->Hoga.Ary[2].SellCnt = std::stoi(item.sell_count3);
-	sym->Hoga.Ary[2].BuyCnt = std::stoi(item.buy_count3);
+		if (item.buy_price2.length() > 0)
+			sym->Hoga.Ary[1].BuyPrice = std::stoi(item.buy_price2);
+		else
+			sym->Hoga.Ary[0].BuyPrice = 0;
+		sym->Hoga.Ary[1].SellQty = std::stoi(item.sell_qty2);
+		sym->Hoga.Ary[1].BuyQty = std::stoi(item.buy_qty2);
+		sym->Hoga.Ary[1].SellCnt = std::stoi(item.sell_count2);
+		sym->Hoga.Ary[1].BuyCnt = std::stoi(item.buy_count2);
 
-	if (item.sell_price4.length() > 0)
-		sym->Hoga.Ary[3].SellPrice = std::stoi(item.sell_price4);
-	else
-		sym->Hoga.Ary[3].SellPrice = 0;
 
-	if (item.buy_price4.length() > 0)
-		sym->Hoga.Ary[3].BuyPrice = std::stoi(item.buy_price4);
-	else
-		sym->Hoga.Ary[3].BuyPrice = 0;
+		if (item.sell_price3.length() > 0)
+			sym->Hoga.Ary[2].SellPrice = std::stoi(item.sell_price3);
+		else
+			sym->Hoga.Ary[2].SellPrice = 0;
 
-	sym->Hoga.Ary[3].SellQty = std::stoi(item.sell_qty4);
-	sym->Hoga.Ary[3].BuyQty = std::stoi(item.buy_qty4);
-	sym->Hoga.Ary[3].SellCnt = std::stoi(item.sell_count4);
-	sym->Hoga.Ary[3].BuyCnt = std::stoi(item.buy_count4);
+		if (item.buy_price3.length() > 0)
+			sym->Hoga.Ary[2].BuyPrice = std::stoi(item.buy_price3);
+		else
+			sym->Hoga.Ary[2].BuyPrice = 0;
+		sym->Hoga.Ary[2].SellQty = std::stoi(item.sell_qty3);
+		sym->Hoga.Ary[2].BuyQty = std::stoi(item.buy_qty3);
+		sym->Hoga.Ary[2].SellCnt = std::stoi(item.sell_count3);
+		sym->Hoga.Ary[2].BuyCnt = std::stoi(item.buy_count3);
 
-	if (item.sell_price5.length() > 0)
-		sym->Hoga.Ary[4].SellPrice = std::stoi(item.sell_price5);
-	else
-		sym->Hoga.Ary[4].SellPrice = 0;
+		if (item.sell_price4.length() > 0)
+			sym->Hoga.Ary[3].SellPrice = std::stoi(item.sell_price4);
+		else
+			sym->Hoga.Ary[3].SellPrice = 0;
 
-	if (item.buy_price5.length() > 0)
-		sym->Hoga.Ary[4].BuyPrice = std::stoi(item.buy_price5);
-	else
-		sym->Hoga.Ary[4].BuyPrice = 0;
+		if (item.buy_price4.length() > 0)
+			sym->Hoga.Ary[3].BuyPrice = std::stoi(item.buy_price4);
+		else
+			sym->Hoga.Ary[3].BuyPrice = 0;
 
-	sym->Hoga.Ary[4].SellQty = std::stoi(item.sell_qty5);
-	sym->Hoga.Ary[4].BuyQty = std::stoi(item.buy_qty5);
-	sym->Hoga.Ary[4].SellCnt = std::stoi(item.sell_count5);
-	sym->Hoga.Ary[4].BuyCnt = std::stoi(item.buy_count5);
+		sym->Hoga.Ary[3].SellQty = std::stoi(item.sell_qty4);
+		sym->Hoga.Ary[3].BuyQty = std::stoi(item.buy_qty4);
+		sym->Hoga.Ary[3].SellCnt = std::stoi(item.sell_count4);
+		sym->Hoga.Ary[3].BuyCnt = std::stoi(item.buy_count4);
 
-	sym->Hoga.TotSellQty = std::stoi(item.tot_sell_qty);
-	sym->Hoga.TotBuyQty = std::stoi(item.tot_buy_qty);
-	sym->Hoga.TotSellCnt = std::stoi(item.tot_sell_count);
-	sym->Hoga.TotBuyCnt = std::stoi(item.tot_buy_count);
+		if (item.sell_price5.length() > 0)
+			sym->Hoga.Ary[4].SellPrice = std::stoi(item.sell_price5);
+		else
+			sym->Hoga.Ary[4].SellPrice = 0;
 
-	sym->Hoga.Time = item.time;
+		if (item.buy_price5.length() > 0)
+			sym->Hoga.Ary[4].BuyPrice = std::stoi(item.buy_price5);
+		else
+			sym->Hoga.Ary[4].BuyPrice = 0;
 
-	//VtSystemManager::GetInstance()->UpdateRealtimeArgs(sym);
+		sym->Hoga.Ary[4].SellQty = std::stoi(item.sell_qty5);
+		sym->Hoga.Ary[4].BuyQty = std::stoi(item.buy_qty5);
+		sym->Hoga.Ary[4].SellCnt = std::stoi(item.sell_count5);
+		sym->Hoga.Ary[4].BuyCnt = std::stoi(item.buy_count5);
 
-	// 관련된 창에 메시지를 보낸다.
-	SmCallbackManager::GetInstance()->OnWndHogaEvent(sym);
+		sym->Hoga.TotSellQty = std::stoi(item.tot_sell_qty);
+		sym->Hoga.TotBuyQty = std::stoi(item.tot_buy_qty);
+		sym->Hoga.TotSellCnt = std::stoi(item.tot_sell_count);
+		sym->Hoga.TotBuyCnt = std::stoi(item.tot_buy_count);
+
+		sym->Hoga.Time = item.time;
+
+		//VtSystemManager::GetInstance()->UpdateRealtimeArgs(sym);
+
+		// 관련된 창에 메시지를 보낸다.
+		SmCallbackManager::GetInstance()->OnWndHogaEvent(sym);
+	}
+	catch (std::exception& e) {
+		LOG_F(ERROR, _T(" %s, MSG : %s"), __FUNCTION__, e.what());
+	}
+	catch (...) {
+		LOG_F(ERROR, _T(" %s 알수없는 오류"), __FUNCTION__);
+	}
 }
 
 bool SmRealtimeHogaManager::ExecuteTask(std::array<SmHogaItem, HogaArraySize>& arr, int taken)
 {
+	try {
 	std::set<SmSymbol*> symbol_set;
 	for (int i = 0; i < taken; ++i) {
 		SmHogaItem item = arr.at(i);
@@ -466,6 +476,14 @@ bool SmRealtimeHogaManager::ExecuteTask(std::array<SmHogaItem, HogaArraySize>& a
 		SmSymbol* sym = *it;
 		// 관련된 창에 메시지를 보낸다.
 		SmCallbackManager::GetInstance()->OnWndHogaEvent(sym);
+	}
+
+	}
+	catch (std::exception& e) {
+		LOG_F(ERROR, _T(" %s, MSG : %s"), __FUNCTION__, e.what());
+	}
+	catch (...) {
+		LOG_F(ERROR, _T(" %s 알수없는 오류"), __FUNCTION__);
 	}
 
 	return true;

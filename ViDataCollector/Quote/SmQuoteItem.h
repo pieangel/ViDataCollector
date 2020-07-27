@@ -13,7 +13,7 @@ struct SmQuoteData {
 	std::string to_preday; // 전일대비
 	std::string up_down_rate; // 등락율
 	std::string sign;
-	int acc_vol = 0;
+	std::string acc_vol;
 };
 
 struct SmTickData {

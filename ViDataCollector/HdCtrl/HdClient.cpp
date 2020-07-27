@@ -2392,12 +2392,14 @@ void HdClient::OnAbRealtimeSise(CString& strKey, LONG& nRealType)
 	quote.time = (LPCTSTR)strTime.Trim();
 	quote.volume = (LPCTSTR)strVolume.Trim();
 	quote.up_down = (LPCTSTR)strUpdown.Trim();
+	quote.sign = (LPCTSTR)strUpdown.Trim();
 	quote.up_down_rate = (LPCTSTR)strUpRate.Trim();
 	quote.to_preday = (LPCTSTR)strPreDayCmp.Trim();
 	quote.close = (LPCTSTR)strCloseP;
 	quote.open = (LPCTSTR)strOpen;
 	quote.high = (LPCTSTR)strHigh;
 	quote.low = (LPCTSTR)strLow;
+	quote.acc_vol = (LPCTSTR)strAccAmount;
 
 	// 쓰레드 큐에 넣는다.
 	SmRealtimeQuoteManager::GetInstance()->AddFutTask(std::move(quote));
@@ -2890,6 +2892,7 @@ void HdClient::OnRealFutureQuote(CString& strKey, LONG& nRealType)
 	CString	strData054 = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "저가");
 	CString strCom = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "전일대비");
 	CString strUpRate = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "등락율");
+	CString strAccVol = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "누적거래량");
 
 	CString msg;
 	msg.Format(_T(" OnRealFutureQuote code = %s, system_time = %s, \n 현재가 = %s\n"), strSeries, sys_time.c_str(), strData051);
@@ -2903,12 +2906,14 @@ void HdClient::OnRealFutureQuote(CString& strKey, LONG& nRealType)
 	quote.time = (LPCTSTR)strTime.Trim();
 	quote.volume = (LPCTSTR)strVolume.Trim();
 	quote.up_down = (LPCTSTR)strUpdown.Trim();
+	quote.sign = (LPCTSTR)strUpdown.Trim();
 	quote.up_down_rate = (LPCTSTR)strUpRate.Trim();
 	quote.to_preday = (LPCTSTR)strCom.Trim();
 	quote.close = (LPCTSTR)strData051;
 	quote.open = (LPCTSTR)strData052;
 	quote.high = (LPCTSTR)strData053;
 	quote.low = (LPCTSTR)strData054;
+	quote.acc_vol = (LPCTSTR)strAccVol;
 
 	// 쓰레드 큐에 넣는다.
 	SmRealtimeQuoteManager::GetInstance()->AddFutTask(std::move(quote));
@@ -2937,6 +2942,7 @@ void HdClient::OnRealOptionQuote(CString& strKey, LONG& nRealType)
 	quote.time = (LPCTSTR)strTime.Trim();
 	quote.volume = (LPCTSTR)strVolume.Trim();
 	quote.up_down = (LPCTSTR)strUpdown.Trim();
+	quote.sign = (LPCTSTR)strUpdown.Trim();
 	quote.up_down_rate = (LPCTSTR)strUpRate.Trim();
 	quote.to_preday = (LPCTSTR)strCom.Trim();
 	quote.close = (LPCTSTR)strData051;
@@ -2971,6 +2977,7 @@ void HdClient::OnRealProductQuote(CString& strKey, LONG& nRealType)
 	quote.time = (LPCTSTR)strTime.Trim();
 	quote.volume = (LPCTSTR)strVolume.Trim();
 	quote.up_down = (LPCTSTR)strUpdown.Trim();
+	quote.sign = (LPCTSTR)strUpdown.Trim();
 	quote.up_down_rate = (LPCTSTR)strUpRate.Trim();
 	quote.to_preday = (LPCTSTR)strCom.Trim();
 	quote.close = (LPCTSTR)strData051;
