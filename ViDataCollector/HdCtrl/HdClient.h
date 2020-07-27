@@ -11,6 +11,8 @@ class HdClient : public TemplateSingleton<HdClient>
 public:
 	HdClient();
 	~HdClient();
+	bool Enable() const { return _Enable; }
+	void Enable(bool val) { _Enable = val; }
 private:
 	HdCtrl* _HdCtrl = nullptr;
 	// 시스템 요청 맵
@@ -24,7 +26,7 @@ private:
 	int GetChartDataForDomestic(SmChartDataRequest req);
 	int GetChartData(SmChartDataRequest req);
 
-
+	bool _Enable = true;
 public:
 	int Init();
 	int Login(std::string id, std::string pwd, std::string cert);
@@ -111,5 +113,13 @@ public:
 	void OnAbRealtimeSise(CString& strKey, LONG& nRealType);
 	// 해외 실시간 호가
 	void OnAbRealtimeHoga(CString& strKey, LONG& nRealType);
+
+	void OnFutureHoga(CString& strKey, LONG& nRealType);
+	void OnOptionHoga(CString& strKey, LONG& nRealType);
+	void OnProductHoga(CString& strKey, LONG& nRealType);
+
+	void OnRealFutureQuote(CString& strKey, LONG& nRealType);
+	void OnRealOptionQuote(CString& strKey, LONG& nRealType);
+	void OnRealProductQuote(CString& strKey, LONG& nRealType);
 };
 

@@ -69,7 +69,6 @@ SmSymbol* SmProduct::AddSymbol(std::string symCode)
 	SmSymbol* sym = symMgr->FindAddSymbol(symCode);
 	sym->SymbolCode(symCode);
 	_SymbolList.push_back(sym);
-	//AddToYearMonth(symCode, sym);
 	return sym;
 }
 
@@ -80,7 +79,6 @@ SmSymbol* SmProduct::AddSymbol(std::string symCode, std::string name)
 	sym->SymbolCode(symCode);
 	sym->Name(name);
 	_SymbolList.push_back(sym);
-	//AddToYearMonth(symCode, name, sym);
 	return sym;
 }
 

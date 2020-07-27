@@ -1,22 +1,23 @@
 #pragma once
 #include "../Global/TemplateSingleton.h"
-#include <mongocxx\config\config.hpp>
+//#include <mongocxx\config\config.hpp>
 #include "../Hoga/SmHogaDefine.h"
 #include "../Quote/SmQuoteDefine.h"
 #include "../Chart/SmChartDefine.h"
 
 
-namespace mongocxx
-{
-	MONGOCXX_INLINE_NAMESPACE_BEGIN
-		class instance;
-		class client;
-		class pool;
-		class find;
-	MONGOCXX_INLINE_NAMESPACE_END
-};
+// namespace mongocxx
+// {
+// 	MONGOCXX_INLINE_NAMESPACE_BEGIN
+// 		class instance;
+// 		class client;
+// 		class pool;
+// 		class find;
+// 	MONGOCXX_INLINE_NAMESPACE_END
+// };
 
 class SmChartData;
+class MongoDBInstance;
 class SmMongoDBManager : public TemplateSingleton<SmMongoDBManager>
 {
 public:
@@ -36,7 +37,9 @@ public:
 private:
 	void InitDatabase();
 	
-	mongocxx::instance* _Instance = nullptr;
-	mongocxx::client* _Client = nullptr;
-	mongocxx::pool* _ConnPool = nullptr;
+// 	mongocxx::instance* _Instance = nullptr;
+// 	mongocxx::client* _Client = nullptr;
+// 	mongocxx::pool* _ConnPool = nullptr;
+
+	MongoDBInstance* _DBInstance = nullptr;
 };

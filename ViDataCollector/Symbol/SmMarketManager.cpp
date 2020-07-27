@@ -90,7 +90,8 @@ void SmMarketManager::MakeFavoriteList()
 	// 실시간 등록을 해준다.
 	for (auto it = _FavoriteList.begin(); it != _FavoriteList.end(); ++it) {
 		SmSymbol* symbol = *it;
-		HdClient::GetInstance()->RegisterProduct(symbol->SymbolCode().c_str());
+		if (symbol)
+			HdClient::GetInstance()->RegisterProduct(symbol->SymbolCode().c_str());
 	}
 }
 
@@ -384,57 +385,57 @@ void SmMarketManager::InitDmFutures()
 
 void SmMarketManager::InitAbroadProducts()
 {
-// 	_AbroadProductSet.insert("6A");
-// 	_AbroadProductSet.insert("6B");
-// 	_AbroadProductSet.insert("6E");
-// 	_AbroadProductSet.insert("6J");
-// 	_AbroadProductSet.insert("E7");
-// 	_AbroadProductSet.insert("J7");
-// 	_AbroadProductSet.insert("M6A");
-// 	_AbroadProductSet.insert("M6B");
-// 	_AbroadProductSet.insert("M6E");
-// 	_AbroadProductSet.insert("ES");
-// 	_AbroadProductSet.insert("NIY");
-// 	_AbroadProductSet.insert("NKD");
+ 	_AbroadProductSet.insert("6A");
+	_AbroadProductSet.insert("6B");
+	_AbroadProductSet.insert("6E");
+	_AbroadProductSet.insert("6J");
+	_AbroadProductSet.insert("E7");
+	_AbroadProductSet.insert("J7");
+ 	_AbroadProductSet.insert("M6A");
+	_AbroadProductSet.insert("M6B");
+	_AbroadProductSet.insert("M6E");
+	_AbroadProductSet.insert("ES");
+	_AbroadProductSet.insert("NIY");
+	_AbroadProductSet.insert("NKD");
  	_AbroadProductSet.insert("NQ");
-// 	_AbroadProductSet.insert("OES");
-// 	_AbroadProductSet.insert("ONQ");
-// 	_AbroadProductSet.insert("SP");
-// 	_AbroadProductSet.insert("GE");
+	_AbroadProductSet.insert("OES");
+	_AbroadProductSet.insert("ONQ");
+	_AbroadProductSet.insert("SP");
+	_AbroadProductSet.insert("GE");
 	_AbroadProductSet.insert("CL"); // 크루드 오일
-//	_AbroadProductSet.insert("HO"); // 난방유
-//	_AbroadProductSet.insert("NG"); // 천연가스
-//	_AbroadProductSet.insert("QG"); // 미니천연가스
+	_AbroadProductSet.insert("HO"); // 난방유
+	_AbroadProductSet.insert("NG"); // 천연가스
+	_AbroadProductSet.insert("QG"); // 미니천연가스
 	_AbroadProductSet.insert("QM"); // 미니크루드 오일
-//	_AbroadProductSet.insert("RB"); // 가솔린
+	_AbroadProductSet.insert("RB"); // 가솔린
  	_AbroadProductSet.insert("GC");
  	_AbroadProductSet.insert("MGC");
-// 	_AbroadProductSet.insert("OGC");
-// 	_AbroadProductSet.insert("OSI");
-// 	_AbroadProductSet.insert("QO");
-// 	_AbroadProductSet.insert("SI");
-// 	_AbroadProductSet.insert("YM");
-// 	_AbroadProductSet.insert("ZF");
-// 	_AbroadProductSet.insert("ZN");
-// 	_AbroadProductSet.insert("ZQ");
-// 	_AbroadProductSet.insert("OZC");
-// 	_AbroadProductSet.insert("OZS");
-// 	_AbroadProductSet.insert("OZW");
-// 	_AbroadProductSet.insert("ZC");
-// 	_AbroadProductSet.insert("ZL");
-// 	_AbroadProductSet.insert("ZM");
-// 	_AbroadProductSet.insert("ZS");
-// 	_AbroadProductSet.insert("ZW");
-// 	_AbroadProductSet.insert("CN");
-// 	_AbroadProductSet.insert("NK");
-// 	_AbroadProductSet.insert("TW");
-// 	_AbroadProductSet.insert("BRN");
-	_AbroadProductSet.insert("HSI");
-// 	_AbroadProductSet.insert("VX");
-// 	_AbroadProductSet.insert("GF");
-// 	_AbroadProductSet.insert("HF");
-// 	_AbroadProductSet.insert("HG");
-// 	_AbroadProductSet.insert("LE");
+ 	_AbroadProductSet.insert("OGC");
+ 	_AbroadProductSet.insert("OSI");
+ 	_AbroadProductSet.insert("QO");
+ 	_AbroadProductSet.insert("SI");
+ 	_AbroadProductSet.insert("YM");
+	_AbroadProductSet.insert("ZF");
+	_AbroadProductSet.insert("ZN");
+	_AbroadProductSet.insert("ZQ");
+	_AbroadProductSet.insert("OZC");
+	_AbroadProductSet.insert("OZS");
+	_AbroadProductSet.insert("OZW");
+	_AbroadProductSet.insert("ZC");
+	_AbroadProductSet.insert("ZL");
+	_AbroadProductSet.insert("ZM");
+	_AbroadProductSet.insert("ZS");
+	_AbroadProductSet.insert("ZW");
+ 	_AbroadProductSet.insert("CN");
+	_AbroadProductSet.insert("NK");
+	_AbroadProductSet.insert("TW");
+//	_AbroadProductSet.insert("BRN");
+	_AbroadProductSet.insert("HSI"); // 항생
+ 	_AbroadProductSet.insert("VX");
+ 	_AbroadProductSet.insert("GF");
+ 	_AbroadProductSet.insert("HF");
+ 	_AbroadProductSet.insert("HG");
+ 	_AbroadProductSet.insert("LE");
 }
 
 void SmMarketManager::InitCodeToMonth()
@@ -516,6 +517,50 @@ void SmMarketManager::InitMarketTable()
 
 void SmMarketManager::InitDmMarketProducts()
 {
+	std::string market_name = "국내선물";
+	SmMarket* market = AddMarket(market_name);
+	market->MarketCode("101F");
+	std::string product_code = "101";
+	SmProduct* product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("국내선물");
+	product->Name("국내선물");
+
+	product_code = "105";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("코스피200미니선물");
+	product->NameKr("Kospi200MiniF");
+
+	product_code = "106";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("코스닥150선물");
+	product->NameKr("Kosdaqq150F");
+
+	product_code = "167";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("BMA 선물");
+	product->Name("BMA Future");
+
+	product_code = "175";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("USD 선물");
+	product->Name("USD Future");
+
+	/*
 	std::string market_name = "코스피선물";
 	SmMarket* market = AddMarket(market_name);
 	market->MarketCode("101F");
@@ -577,84 +622,85 @@ void SmMarketManager::InitDmMarketProducts()
 	product->Name("USD Future");
 
 
-// 	market_name = "코스피옵션";
-// 	market = AddMarket(market_name);
-// 	market->MarketCode("101O");
-// 	product_code = "201";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->NameKr("코스피200콜옵션");
-// 	product->Name("Kospi200O");
-// 
-// 	product_code = "301";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->NameKr("코스피200풋옵션");
-// 	product->Name("Kospi200O");
-// 
-// 	market_name = "코스피위클리옵션";
-// 	market = AddMarket(market_name);
-// 	market->MarketCode("109O");
-// 
-// 	product_code = "209";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->NameKr("코스피200위클리콜옵션");
-// 	product->Name("Kospi200WeeklyO");
-// 
-// 	product_code = "309";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->NameKr("코스피200위클리풋옵션");
-// 	product->Name("Kospi200WeeklyO");
-// 
-// 	market_name = "코스피미니옵션";
-// 	market = AddMarket(market_name);
-// 	market->MarketCode("105O");
-// 
-// 	product_code = "205";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->NameKr("미니코스피200콜옵션");
-// 	product->NameKr("MiniKospi200O");
-// 
-// 	product_code = "305";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->NameKr("미니코스피200풋옵션");
-// 	product->NameKr("MiniKospi200O");
-// 
-// 	market_name = "코스닥옵션";
-// 	market = AddMarket(market_name);
-// 	market->MarketCode("106O");
-// 
-// 	product_code = "206";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->Name("코스닥150콜옵션");
-// 	product->NameKr("Kosqaq150O");
-// 
-// 	product_code = "306";
-// 	product = market->FindAddProduct(product_code);
-// 	AddProduct(product);
-// 	AddCategoryMarket(product_code, market_name);
-// 	product->MarketName(market_name);
-// 	product->Name("코스닥150풋옵션");
-// 	product->NameKr("Kosqaq150O");
+	market_name = "코스피옵션";
+	market = AddMarket(market_name);
+	market->MarketCode("101O");
+	product_code = "201";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("코스피200콜옵션");
+	product->Name("Kospi200O");
+
+	product_code = "301";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("코스피200풋옵션");
+	product->Name("Kospi200O");
+
+	market_name = "코스피위클리옵션";
+	market = AddMarket(market_name);
+	market->MarketCode("109O");
+
+	product_code = "209";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("코스피200위클리콜옵션");
+	product->Name("Kospi200WeeklyO");
+
+	product_code = "309";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("코스피200위클리풋옵션");
+	product->Name("Kospi200WeeklyO");
+
+	market_name = "코스피미니옵션";
+	market = AddMarket(market_name);
+	market->MarketCode("105O");
+
+	product_code = "205";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("미니코스피200콜옵션");
+	product->NameKr("MiniKospi200O");
+
+	product_code = "305";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->NameKr("미니코스피200풋옵션");
+	product->NameKr("MiniKospi200O");
+
+	market_name = "코스닥옵션";
+	market = AddMarket(market_name);
+	market->MarketCode("106O");
+
+	product_code = "206";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->Name("코스닥150콜옵션");
+	product->NameKr("Kosqaq150O");
+
+	product_code = "306";
+	product = market->FindAddProduct(product_code);
+	AddProduct(product);
+	AddCategoryMarket(product_code, market_name);
+	product->MarketName(market_name);
+	product->Name("코스닥150풋옵션");
+	product->NameKr("Kosqaq150O");
+	*/
 }
 
 void SmMarketManager::InitETFTable()

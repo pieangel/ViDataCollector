@@ -203,9 +203,9 @@ void SmRealtimeQuoteManager::ExecuteTask(SmQuoteData&& item)
 // 	quoteItem.Decimal = sym->Decimal;
 // 
 // 	sym->Quote.QuoteItemQ.push_front(quoteItem);
-	if (sym->Quote.QuoteItemQ.size() > 20) {
-		sym->Quote.QuoteItemQ.pop_back();
-	}
+// 	if (sym->Quote.QuoteItemQ.size() > 20) {
+// 		sym->Quote.QuoteItemQ.pop_back();
+// 	}
 
 	// 손절, 익절, 스탑 주문을 체크한다.
 	SmCallbackManager::GetInstance()->OnQuoteEvent(sym);
@@ -291,6 +291,12 @@ bool SmRealtimeQuoteManager::ExecuteTask(std::array<SmQuoteData, QuoteArraySize>
 // 		if (sym->Quote.QuoteItemQ.size() > 20) {
 // 			sym->Quote.QuoteItemQ.pop_back();
 // 		}
+
+
+		CString msg;
+		msg.Format(_T(" OnFutureHoga symbol_code = %s, time = %s\n"), item.symbol_code.c_str(), item.time.c_str());
+		TRACE(msg);
+
 		// 손절, 익절, 스탑 주문을 체크한다.
 		SmCallbackManager::GetInstance()->OnQuoteEvent(sym);
 	}

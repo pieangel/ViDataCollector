@@ -364,6 +364,9 @@
     <ClInclude Include="Hoga\SmHogaDefine.h">
       <Filter>Hoga</Filter>
     </ClInclude>
+    <ClInclude Include="Database\MongoDBInstance.h">
+      <Filter>Database</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Xml\pugixml.cpp">
@@ -545,6 +548,9 @@
     </ClCompile>
     <ClCompile Include="Symbol\VtRealtimeRegisterManager.cpp">
       <Filter>Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\MongoDBInstance.cpp">
+      <Filter>Database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

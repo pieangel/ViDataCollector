@@ -133,7 +133,7 @@ BOOL CViDataCollectorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-
+	//SmMongoDBManager::GetInstance();
 
 	VtLogInDlg loginDlg(this);
 	if (loginDlg.DoModal() == IDCANCEL)
@@ -197,6 +197,8 @@ HCURSOR CViDataCollectorDlg::OnQueryDragIcon()
 
 void CViDataCollectorDlg::ClearAllResources()
 {
+	// 증권사 이벤트를 막는다.
+	HdClient::GetInstance()->Enable(false);
 	// 시세 수집과 호가 수집을 멈춘다.
 	SmRealtimeHogaManager::GetInstance()->Enable(false);
 	SmRealtimeQuoteManager::GetInstance()->Enable(false);
@@ -271,6 +273,8 @@ void CViDataCollectorDlg::HideProgress()
 		ProgressDlg->ShowWindow(SW_HIDE);
 		ProgressDlg->DestroyWindow();
 	}
+
+	SmSymbolManager::GetInstance()->StartCollectData();
 }
 
 void CViDataCollectorDlg::ReadConfig()

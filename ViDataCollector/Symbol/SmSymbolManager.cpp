@@ -29,6 +29,8 @@ SmSymbolManager::SmSymbolManager()
 
 SmSymbolManager::~SmSymbolManager()
 {
+	StopThread();
+
 	for (auto it = _SymbolMap.begin(); it != _SymbolMap.end(); ++it) {
 		delete it->second;
 	}
