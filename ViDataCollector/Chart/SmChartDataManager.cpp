@@ -33,6 +33,13 @@ void SmChartDataManager::AddChartData(SmChartData* chart_data)
 	auto it = _ChartDataMap.find(chart_data->GetDataKey());
 	if (it == _ChartDataMap.end()) {
 		_ChartDataMap[chart_data->GetDataKey()] = chart_data;
+
+		SmSymbol* symbol = SmSymbolManager::GetInstance()->FindSymbol(chart_data->SymbolCode());
+		// 심볼에 차트 데이터를 추가해 준다. 
+		// 종가 업데이트를 위해서 꼭 필요하다.
+		if (symbol) {
+			symbol->addChartData(chart_data->GetDataKey(), chart_data);
+		}
 	}
 }
 
@@ -45,6 +52,12 @@ SmChartData* SmChartDataManager::CreateChartData(SmChartDataRequest data_req)
 		chartData->ChartType(data_req.chartType);
 		chartData->Cycle(data_req.cycle);
 		_ChartDataMap[data_req.GetDataKey()] = chartData;
+		SmSymbol* symbol = SmSymbolManager::GetInstance()->FindSymbol(chartData->SymbolCode());
+		// 심볼에 차트 데이터를 추가해 준다. 
+		// 종가 업데이트를 위해서 꼭 필요하다.
+		if (symbol) {
+			symbol->addChartData(chartData->GetDataKey(), chartData);
+		}
 	}
 
 	return chartData;
@@ -59,6 +72,12 @@ SmChartData* SmChartDataManager::CreateChartData(SmChartDataItem data_item)
 		chartData->ChartType(data_item.chartType);
 		chartData->Cycle(data_item.cycle);
 		_ChartDataMap[data_item.GetDataKey()] = chartData;
+		SmSymbol* symbol = SmSymbolManager::GetInstance()->FindSymbol(chartData->SymbolCode());
+		// 심볼에 차트 데이터를 추가해 준다. 
+		// 종가 업데이트를 위해서 꼭 필요하다.
+		if (symbol) {
+			symbol->addChartData(chartData->GetDataKey(), chartData);
+		}
 	}
 
 	return chartData;
@@ -74,6 +93,12 @@ SmChartData* SmChartDataManager::CreateChartData(std::string symbol_code, int ch
 		chartData->ChartType((SmChartType)chart_type);
 		chartData->Cycle(cycle);
 		_ChartDataMap[data_key] = chartData;
+		SmSymbol* symbol = SmSymbolManager::GetInstance()->FindSymbol(chartData->SymbolCode());
+		// 심볼에 차트 데이터를 추가해 준다. 
+		// 종가 업데이트를 위해서 꼭 필요하다.
+		if (symbol) {
+			symbol->addChartData(chartData->GetDataKey(), chartData);
+		}
 	}
 
 	return chartData;

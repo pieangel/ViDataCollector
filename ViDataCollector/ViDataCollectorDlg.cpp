@@ -38,6 +38,7 @@
 #include "Task/SmRealtimeQuoteManager.h"
 #include "Symbol/SmSymbolManager.h"
 #include "Database/SmMongoDBManager.h"
+#include "Network/SmSessionManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -203,6 +204,7 @@ void CViDataCollectorDlg::ClearAllResources()
 	SmRealtimeHogaManager::GetInstance()->Enable(false);
 	SmRealtimeQuoteManager::GetInstance()->Enable(false);
 
+	SmSessionManager::DestroyInstance();
 	SmMongoDBManager::DestroyInstance();
 	SmSymbolManager::DestroyInstance();
 	SmRealtimeHogaManager::DestroyInstance();

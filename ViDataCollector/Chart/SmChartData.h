@@ -5,6 +5,7 @@
 #include <set>
 #include <list>
 #include <map>
+#include "../Quote/SmQuoteItem.h"
 class SmChartData
 {
 private:
@@ -66,7 +67,8 @@ public:
 	void OnChartDataUpdated();
 	void PushChartDataItemToBack(SmChartDataItem data);
 	void PushChartDataItemToFront(SmChartDataItem data);
-	void UpdateChartData(SmChartDataItem data);
+	// 실시간 틱 데이터로 차트데이터를 업데이트 한다.
+	void UpdateChartData(SmQuoteData tick_data);
 	void AddChartData(SmChartDataItem&& data);
 	// 분봉데이터를 업데이트 한다.
 	void UpdateChartData(std::string time, int close, int vol);
@@ -106,6 +108,8 @@ public:
 	bool Received() const { return _Received; }
 	void Received(bool val) { _Received = val; }
 	// 데이터 수집을 위한 시간표를 초기화 한다.
-	void InitTimeTable();
+	//void InitTimeTable();
+
+	SmChartDataItem* GetChartDataItem(std::string date_time);
 };
 

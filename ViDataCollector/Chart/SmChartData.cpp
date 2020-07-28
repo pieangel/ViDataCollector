@@ -8,6 +8,7 @@
 #include "../Util/VtStringUtil.h"
 //#include "../Network/SmServiceDefine.h"
 #include "../Format/format.h"
+#include "../Quote/SmQuoteItem.h"
 
 using namespace nlohmann;
 void SmChartData::GetChartDataFromDB()
@@ -171,9 +172,33 @@ void SmChartData::PushChartDataItemToFront(SmChartDataItem data)
 	
 }
 
-void SmChartData::UpdateChartData(SmChartDataItem data)
+void SmChartData::UpdateChartData(SmQuoteData tick_data)
 {
-	
+	std::string time = tick_data.time.substr(0, 4);
+	int close = std::stoi(tick_data.close);
+	auto it = _DataMap.find(time);
+	if (it == _DataMap.end()) {
+		return;
+	}
+
+	SmChartDataItem& item = it->second;
+	if (item.o == 0) {
+		item.o = close;
+	}
+	item.c = close;
+	if (item.h == 0)
+		item.h = close;
+	else {
+		if (close > item.h)
+			item.h = close;
+	}
+
+	if (item.l == 0)
+		item.l = close;
+	else {
+		if (close < item.l)
+			item.l = close;
+	}
 }
 
 void SmChartData::UpdateChartData(std::string time, int close, int vol)
@@ -270,13 +295,22 @@ void SmChartData::OnTimer()
 	GetCyclicDataFromServer();
 }
 
-void SmChartData::InitTimeTable()
+// void SmChartData::InitTimeTable()
+// {
+// 	for (int i = 0; i < 24; ++i) {
+// 		for (int j = 0; j < 60; ++j) {
+// 			std::string time_key = fmt::format("{0:0>2}{1:0>2}", i, j);
+// 			SmChartDataItem item;
+// 			_DataMap[time_key] = item;
+// 		}
+// 	}
+// }
+
+SmChartDataItem* SmChartData::GetChartDataItem(std::string date_time)
 {
-	for (int i = 0; i < 24; ++i) {
-		for (int j = 0; j < 60; ++j) {
-			std::string time_key = fmt::format("{0:0>2}{1:0>2}", i, j);
-			SmChartDataItem item;
-			_DataMap[time_key] = item;
-		}
-	}
+	auto it = _DataMap.find(date_time);
+	if (it != _DataMap.end())
+		return &it->second;
+
+	return nullptr;
 }

@@ -2344,6 +2344,7 @@ void HdClient::OnAbRealtimeSise(CString& strKey, LONG& nRealType)
 	CString strAccAmount = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "누적거래량");
 	CString strPreDayCmp = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "전일대비");
 	CString strUpRate = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "전일대비등락율");
+	CString strLocalDate = m_CommAgent.CommGetData(strKey, nRealType, "OutRec1", 0, "국내일자");
 	// 전일대비등락율
 // 
 // 	//m_edSeriesO.SetWindowText(strSeries);
@@ -2400,6 +2401,7 @@ void HdClient::OnAbRealtimeSise(CString& strKey, LONG& nRealType)
 	quote.high = (LPCTSTR)strHigh;
 	quote.low = (LPCTSTR)strLow;
 	quote.acc_vol = (LPCTSTR)strAccAmount;
+	quote.local_date = (LPCTSTR)strLocalDate;
 
 	// 쓰레드 큐에 넣는다.
 	SmRealtimeQuoteManager::GetInstance()->AddFutTask(std::move(quote));

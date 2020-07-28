@@ -2,10 +2,13 @@
 #include <string>
 #include <list>
 #include "../Quote/SmQuoteDefine.h"
+#include "../Quote/SmQuoteItem.h"
 #include "../Hoga/SmHogaDefine.h"
 #include "../Chart/SmChartDefine.h"
 #include <mutex>
 #include <map>
+class SmChartData;
+
 class SmSymbol
 {
 public:
@@ -62,6 +65,23 @@ public:
 
 	void MakeCurrChartDataByTimer(std::string cur_hour_min);
 	void MakePrevChartDataByTimer(std::string cur_hour_min);
+
+	void UpdateMinData(SmQuoteData tick_data);
+	void UpdateTickData(SmQuoteData tick_data);
+
+	void addChartData(std::string dataKey, SmChartData* chart_data) {
+		_ChartDataMap[dataKey] = chart_data;
+	}
+
+	void removeChartData(std::string dataKey) {
+		auto it = _ChartDataMap.find(dataKey);
+		if (it != _ChartDataMap.end()) {
+			_ChartDataMap.erase(it);
+		}
+	}
+
+	// 실시간 틱 데이터로 차트데이터를 업데이트 한다.
+	void UpdateChartData(SmQuoteData tick_data);
 
 private:
 	std::mutex _mutex;
@@ -124,5 +144,7 @@ private:
 	void MakePrevChartData(int total_min_diff, std::string symbol_code, std::string prev_hour_min, std::string chart_hour_min, int cycle);
 	// 사이클 데이터를 서버로 전송한다.
 	void SendCycleChartData(SmChartDataItem item);
+
+	std::map<std::string, SmChartData*> _ChartDataMap;
 };
 

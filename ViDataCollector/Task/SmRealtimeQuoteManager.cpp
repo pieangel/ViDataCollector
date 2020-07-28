@@ -161,6 +161,11 @@ void SmRealtimeQuoteManager::ExecuteTask(SmQuoteData&& item)
 	SmSymbol* sym = symMgr->FindSymbol(item.symbol_code);
 	if (!sym)
 		return;
+	// 여기서 차트데이터를 업데이트 한다.
+	sym->UpdateMinData(item);
+	sym->UpdateTickData(item);
+	sym->UpdateChartData(item);
+
 	sym->Quote.Close = std::stoi(item.close);
 	sym->Quote.Open = std::stoi(item.open);
 	sym->Quote.High = std::stoi(item.high);
@@ -201,6 +206,10 @@ bool SmRealtimeQuoteManager::ExecuteTask(std::array<SmQuoteData, QuoteArraySize>
 		if (!sym)
 			continue;
 
+		// 여기서 차트데이터를 업데이트 한다.
+		sym->UpdateMinData(item);
+		sym->UpdateTickData(item);
+		sym->UpdateChartData(item);
 		// 집합에 심볼을 추가한다.
 		symbol_set.insert(sym);
 		sym->Quote.Close = std::stoi(item.close);
@@ -214,7 +223,7 @@ bool SmRealtimeQuoteManager::ExecuteTask(std::array<SmQuoteData, QuoteArraySize>
  		sym->Quote.accVolume = std::stoi(item.acc_vol);
 
 		CString msg;
-		msg.Format(_T(" OnFutureHoga symbol_code = %s, time = %s\n"), item.symbol_code.c_str(), item.time.c_str());
+		msg.Format(_T(" OnFutureHoga symbol_code = %s, time = %s\n"), item.symbol_code.c_str(), item.acc_vol.c_str());
 		TRACE(msg);
 
 		// 손절, 익절, 스탑 주문을 체크한다.

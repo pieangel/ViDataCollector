@@ -14,6 +14,7 @@ struct SmQuoteData {
 	std::string up_down_rate; // µÓ∂Ù¿≤
 	std::string sign;
 	std::string acc_vol;
+	std::string local_date;
 };
 
 struct SmTickData {
