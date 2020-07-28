@@ -353,6 +353,23 @@ void SmSymbol::UpdateMinData(SmQuoteData tick_data)
 			data.l = close;
 			data.c = close;
 			data.v = std::stoi(tick_data.volume);
+
+			SmChartDataManager* chartDataMgr = SmChartDataManager::GetInstance();
+			SmChartData* chart_data = chartDataMgr->FindChartData(data.GetDataKey());
+			if (chart_data) {
+				chart_data->AddChartData(std::move(data));
+
+				CString msg;
+				msg.Format(_T("UpdateMinData ::code = %s, cycle = %d, date = %s, t = %s, o = %d, h = %d, l = %d, c = %d, v = %d\n"), data.symbolCode.c_str(), data.cycle, data.date.c_str(), data.time.c_str(), data.o, data.h, data.l, data.c, data.v);
+				TRACE(msg);
+			}
+			else {
+				chart_data = chartDataMgr->CreateChartData(data);
+				chart_data->AddChartData(std::move(data));
+				CString msg;
+				msg.Format(_T("UpdateMinData ::code = %s, cycle = %d, date = %s, t = %s, o = %d, h = %d, l = %d, c = %d, v = %d\n"), data.symbolCode.c_str(), data.cycle, data.date.c_str(), data.time.c_str(), data.o, data.h, data.l, data.c, data.v);
+				TRACE(msg);
+			}
 		}
 	}
 }
