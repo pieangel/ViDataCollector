@@ -9,6 +9,7 @@
 #include <set>
 #include "../Chart/SmChartDataManager.h"
 #include "../Log/loguru.hpp"
+#include "../Network/SmSessionManager.h"
 
 SmRealtimeQuoteManager::SmRealtimeQuoteManager()
 {
@@ -222,6 +223,8 @@ bool SmRealtimeQuoteManager::ExecuteTask(std::array<SmQuoteData, QuoteArraySize>
  		sym->Quote.SignToPreDay = (item.up_down);
  		sym->Quote.accVolume = std::stoi(item.acc_vol);
 
+		
+
 		CString msg;
 		msg.Format(_T(" OnFutureHoga symbol_code = %s, time = %s\n"), item.symbol_code.c_str(), item.acc_vol.c_str());
 		TRACE(msg);
@@ -236,7 +239,7 @@ bool SmRealtimeQuoteManager::ExecuteTask(std::array<SmQuoteData, QuoteArraySize>
 
 		// 관련된 윈도우에 메시지를 보낸다.
 		SmCallbackManager::GetInstance()->OnWndQuoteEvent(sym);
-
+		SmSessionManager::GetInstance()->SendReqUpdateQuote(sym);
 	}
 
 	}

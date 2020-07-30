@@ -4,6 +4,7 @@
 #include "../Symbol/SmSymbol.h"
 #include "SmCallbackManager.h"
 #include "../Log/loguru.hpp"
+#include "../Network/SmSessionManager.h"
 
 SmRealtimeHogaManager::SmRealtimeHogaManager()
 {
@@ -476,6 +477,7 @@ bool SmRealtimeHogaManager::ExecuteTask(std::array<SmHogaItem, HogaArraySize>& a
 		SmSymbol* sym = *it;
 		// 관련된 창에 메시지를 보낸다.
 		SmCallbackManager::GetInstance()->OnWndHogaEvent(sym);
+		SmSessionManager::GetInstance()->SendReqUpdateHoga(sym);
 	}
 
 	}

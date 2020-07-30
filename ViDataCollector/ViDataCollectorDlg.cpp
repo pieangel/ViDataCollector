@@ -15,17 +15,8 @@
 #include "Global/VtGlobal.h"
 #include "Symbol/SmMarketManager.h"
 #include "Symbol/SmSymbolReader.h"
-//#include "Account/VtAccountManager.h"
-//#include "Account/VtAccountPasswordDlg.h"
-//#include "Fund/VtFundManager.h"
-//#include "Account/VtSubAccountManager.h"
 #include "Task/VtProgressDlg.h"
 #include "Symbol/SmSymbolManager.h"
-//#include "Task/HdScheduler.h"
-//#include "OrderUI/VtOrderWndHd.h"
-//#include "Order/VtTotalOrderManager.h"
-//#include "Order/VtFundOrderManagerSelecter.h"
-//#include "Order/VtOrderManagerSelector.h"
 #include "Symbol/VtRealtimeRegisterManager.h"
 #include "Task/SmCallbackManager.h"
 #include "Util/SmUtil.h"
@@ -33,12 +24,17 @@
 #include "Symbol/SmSymbolReader.h"
 #include "Task/ViServerDataReceiver.h"
 #include "Chart/SmChartDataManager.h"
-//#include "OrderUI/VtOrderWnd.h"
 #include "Task/SmRealtimeHogaManager.h"
 #include "Task/SmRealtimeQuoteManager.h"
 #include "Symbol/SmSymbolManager.h"
 #include "Database/SmMongoDBManager.h"
 #include "Network/SmSessionManager.h"
+#include "Network/SmNetClient.h"
+#include "Config/SmConfigManager.h"
+#include "Network/SmProtocolManager.h"
+#include "Network/SmErrorHandler.h"
+#include "Database/SmTimeSeriesServiceManager.h"
+#include "Database/SmTimeSeriesDBManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -99,6 +95,9 @@ BEGIN_MESSAGE_MAP(CViDataCollectorDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BTN_CONNECT, &CViDataCollectorDlg::OnBnClickedBtnConnect)
+	ON_BN_CLICKED(IDC_BTN_SAVE_SYMBOLS, &CViDataCollectorDlg::OnBnClickedBtnSaveSymbols)
+	ON_BN_CLICKED(IDC_BTN_GET_DATA_FROM_SERVER, &CViDataCollectorDlg::OnBnClickedBtnGetDataFromServer)
 END_MESSAGE_MAP()
 
 
@@ -135,6 +134,8 @@ BOOL CViDataCollectorDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	//SmMongoDBManager::GetInstance();
+
+	
 
 	VtLogInDlg loginDlg(this);
 	if (loginDlg.DoModal() == IDCANCEL)
@@ -198,13 +199,17 @@ HCURSOR CViDataCollectorDlg::OnQueryDragIcon()
 
 void CViDataCollectorDlg::ClearAllResources()
 {
+	if (_NetClient) {
+		_NetClient->Stop();
+		delete _NetClient;
+		_NetClient = nullptr;
+	}
 	// 증권사 이벤트를 막는다.
 	HdClient::GetInstance()->Enable(false);
 	// 시세 수집과 호가 수집을 멈춘다.
 	SmRealtimeHogaManager::GetInstance()->Enable(false);
 	SmRealtimeQuoteManager::GetInstance()->Enable(false);
 
-	SmSessionManager::DestroyInstance();
 	SmMongoDBManager::DestroyInstance();
 	SmSymbolManager::DestroyInstance();
 	SmRealtimeHogaManager::DestroyInstance();
@@ -214,23 +219,19 @@ void CViDataCollectorDlg::ClearAllResources()
 	HdClient::DestroyInstance();
 	SmCallbackManager::DestroyInstance();
 	VtRealtimeRegisterManager::DestroyInstance();
-	//VtTotalOrderManager::DestroyInstance();
-	//VtOrderManagerSelector::DestroyInstance();
-	//VtFundOrderManagerSelecter::DestroyInstance();
-
-	//HdScheduler::DestroyInstance();
-	//SmSymbolManager::DestroyInstance();
-	//EbClient::DestroyInstance();
+	
 	VtSaveManager::DestroyInstance();
 	VtLoginManager::DestroyInstance();
 	SmSymbolReader::DestroyInstance();
 	SmMarketManager::DestroyInstance();
 	ZmConfigManager::DestroyInstance();
-	//VtAccountManager::DestroyInstance();
-	//VtFundManager::DestroyInstance();
 	VtGlobal::DestroyInstance();
-	//VtSubAccountManager::DestroyInstance();
-	//SmServerDataReceiver::DestroyInstance();
+	SmConfigManager::DestroyInstance();
+	SmProtocolManager::DestroyInstance();
+	SmErrorHandler::DestroyInstance();
+	SmSessionManager::DestroyInstance();
+	SmTimeSeriesServiceManager::DestroyInstance();
+	SmTimeSeriesDBManager::DestroyInstance();
 }
 
 void CViDataCollectorDlg::StartProcess()
@@ -300,4 +301,24 @@ void CViDataCollectorDlg::OnTimer(UINT_PTR nIDEvent)
 	datRcvr->ExecNext();
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CViDataCollectorDlg::OnBnClickedBtnConnect()
+{
+	if (!_NetClient) {
+		_NetClient = new SmNetClient();
+	}
+}
+
+
+void CViDataCollectorDlg::OnBnClickedBtnSaveSymbols()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CViDataCollectorDlg::OnBnClickedBtnGetDataFromServer()
+{
+	// TODO: Add your control notification handler code here
 }

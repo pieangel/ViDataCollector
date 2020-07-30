@@ -10,6 +10,7 @@
 class VtProgressDlg;
 
 // CViDataCollectorDlg dialog
+class SmNetClient;
 class CViDataCollectorDlg : public CDialogEx
 {
 // Construction
@@ -51,7 +52,11 @@ private:
 	std::string _FleWathPath;
 	bool _EnableFileWatch = false;
 	std::shared_ptr<VtProgressDlg> ProgressDlg = nullptr;
+	SmNetClient* _NetClient = nullptr;
 public:
 	afx_msg void OnClose();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedBtnConnect();
+	afx_msg void OnBnClickedBtnSaveSymbols();
+	afx_msg void OnBnClickedBtnGetDataFromServer();
 };

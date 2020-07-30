@@ -12,8 +12,12 @@
 #define IDD_LOGIN_MAIN                  427
 #define IDD_HD_CTRL                     623
 #define IDC_STATIC_ID                   1000
+#define IDC_BTN_CONNECT                 1000
 #define IDC_STATIC_PWD                  1001
+#define IDC_BTN_SAVE_SYMBOLS            1001
 #define IDC_STATIC_CERT                 1002
+#define IDC_BUTTON3                     1002
+#define IDC_BTN_GET_DATA_FROM_SERVER    1002
 #define IDC_BTN_CAN                     1004
 #define IDC_CHECK_SAVE                  1009
 #define IDC_CHECK_SIMUL                 1010
@@ -29,9 +33,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        129
+#define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -402,6 +402,7 @@ void SmMarketManager::InitAbroadProducts()
 	_AbroadProductSet.insert("ONQ");
 	_AbroadProductSet.insert("SP");
 	_AbroadProductSet.insert("GE");
+	_AbroadProductSet.insert("M2K"); // 미니러셀2000
 	_AbroadProductSet.insert("CL"); // 크루드 오일
 	_AbroadProductSet.insert("HO"); // 난방유
 	_AbroadProductSet.insert("NG"); // 천연가스
